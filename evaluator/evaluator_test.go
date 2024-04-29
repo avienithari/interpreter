@@ -382,3 +382,22 @@ func TestBuiltinFunctions(t *testing.T) {
         }
     }
 }
+
+func TestArrayLiterals(t *testing.T) {
+    input := "[1, 2 * 2, 3 + 3]"
+
+    evaluated := testEval(input)
+    rest, ok := evaluated.(*object.Array)
+    if !ok {
+        t.Fatalf("object is not an Array. got=%T (%+v)", evaluated, evaluated)
+    }
+
+    if len(rest.Elements) != 3 {
+        t.Fatalf("array has wrong sum of elements. got=%d",
+            len(rest.Elements))
+    }
+
+    testIntegerObject(t, rest.Elements[0], 1)
+    testIntegerObject(t, rest.Elements[1], 4)
+    testIntegerObject(t, rest.Elements[2], 6)
+}
